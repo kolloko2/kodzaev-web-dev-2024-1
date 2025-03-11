@@ -22,7 +22,7 @@
     <p>Здесь должна играть фоновая музыка</p>
 
     <!-- Iframe с автозапуском -->
-    <iframe src="audio.html" allow="autoplay"></iframe>
+    <iframe id="audioFrame" src="audio.html" allow="autoplay"></iframe>
 
     <div id="log">
         <h3>Логи:</h3>
@@ -37,7 +37,30 @@
             logDiv.scrollTop = logDiv.scrollHeight;
         }
 
+        const iframe = document.getElementById('audioFrame');
+
+        // Проверка загрузки iframe
+        iframe.onload = () => {
+            addLog('Iframe успешно загружен');
+            try {
+                const iframeAudio = iframe.contentWindow.document.querySelector('audio');
+                if (iframeAudio) {
+                    addLog('Аудио элемент найден в iframe');
+                    iframeAudio.play()
+                        .then(() => addLog('Воспроизведение начато из iframe'))
+                        .catch((err) => addLog('Ошибка воспроизведения в iframe: ' + err.message));
+                } else {
+                    addLog('Аудио элемент не найден в iframe');
+                }
+            } catch (e) {
+                addLog('Ошибка доступа к содержимому iframe: ' + e.message);
+            }
+        };
+
+        iframe.onerror = () => {
+            addLog('Ошибка загрузки iframe');
+        };
+
         addLog('Страница загружена, пытаемся воспроизвести аудио через iframe...');
     </script>
-</body>
-</html>
+<
