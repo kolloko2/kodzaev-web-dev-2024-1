@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Страница с фоновой музыкой</title>
+    <style>
+        #log {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        iframe {
+            display: none; /* Скрываем iframe */
+        }
+    </style>
+</head>
+<body>
+    <h1>Добро пожаловать на мою страницу!</h1>
+    <p>Здесь должна играть фоновая музыка</p>
+
+    <!-- Iframe с автозапуском -->
+    <iframe src="audio.html" allow="autoplay"></iframe>
+
+    <div id="log">
+        <h3>Логи:</h3>
+        <div id="logMessages"></div>
+    </div>
+
+    <script>
+        function addLog(message) {
+            const logDiv = document.getElementById('logMessages');
+            const timestamp = new Date().toLocaleTimeString();
+            logDiv.innerHTML += `[${timestamp}] ${message}<br>`;
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+
+        addLog('Страница загружена, пытаемся воспроизвести аудио через iframe...');
+    </script>
+</body>
+</html>
