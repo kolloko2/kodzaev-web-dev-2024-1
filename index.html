@@ -3,64 +3,194 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Страница с фоновой музыкой</title>
+    <title>Доставка бизнес-ланчей</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        #log {
-            margin-top: 20px;
-            padding: 10px;
-            border: 1px solid #ccc;
-            max-height: 200px;
-            overflow-y: auto;
+        * {
+            box-sizing: border-box;
         }
-        iframe {
-            display: none; /* Скрываем iframe */
+
+        body {
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            font-size: 16px;
+            color: #333;
+        }
+
+        header {
+            background-color: #f8f8f8;
+            padding: 20px;
+            margin: 0;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        nav {
+            margin: 20px 0;
+        }
+
+        nav a {
+            text-decoration: none;
+            font-family: 'Roboto', sans-serif;
+            font-size: 1.2em;
+            color: #007bff;
+            margin: 0 15px;
+        }
+
+        nav a:hover {
+            color: #0056b3;
+        }
+
+        main {
+            padding: 20px;
+            margin: 0 auto;
+            max-width: 1200px;
+        }
+
+        section {
+            margin-bottom: 40px;
+        }
+
+        section h2 {
+            font-size: 2em;
+            font-weight: 700;
+            color: #222;
+        }
+
+        section p {
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+
+        img {
+            width: 100%;
+            max-width: 600px;
+            height: auto;
+            display: block;
+            margin: 20px auto;
+        }
+
+        ul {
+            list-style-type: disc;
+            padding-left: 40px;
+            font-size: 1.1em;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f8f8f8;
+            font-weight: 700;
+        }
+
+        footer {
+            background-color: #000;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+
+        footer p {
+            margin: 10px 0;
+        }
+
+        footer a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.1em;
+        }
+
+        footer a:hover {
+            color: #ccc;
         }
     </style>
 </head>
 <body>
-    <h1>Добро пожаловать на мою страницу!</h1>
-    <p>Здесь должна играть фоновая музыка</p>
+    <header>
+        <h1>Доставка бизнес-ланчей</h1>
+        <nav>
+            <a href="#">Главная</a>
+            <a href="#">Меню</a>
+            <a href="#contacts">Контакты</a>
+        </nav>
+    </header>
 
-    <!-- Iframe с автозапуском -->
-    <iframe id="audioFrame" src="audio.html" allow="autoplay"></iframe>
+    <main>
+        <section>
+            <h2>О компании</h2>
+            <img src="https://via.placeholder.com/600x400" alt="Офис компании">
+            <p>Мы – компания по доставке бизнес-ланчей в Москве. Наша миссия – обеспечить вас вкусной и здоровой едой, доставленной прямо в ваш офис или дом. Мы готовим из свежих ингредиентов и предлагаем разнообразное меню для ваших обедов.</p>
+        </section>
 
-    <div id="log">
-        <h3>Логи:</h3>
-        <div id="logMessages"></div>
-    </div>
+        <section>
+            <h2>Наши преимущества</h2>
+            <ul>
+                <li>Быстрая доставка в течение 30 минут по Москве</li>
+                <li>Широкий выбор блюд, включая вегетарианские и диетические</li>
+                <li>Доступные цены и гибкая система скидок</li>
+            </ul>
+        </section>
 
-    <script>
-        function addLog(message) {
-            const logDiv = document.getElementById('logMessages');
-            const timestamp = new Date().toLocaleTimeString();
-            logDiv.innerHTML += `[${timestamp}] ${message}<br>`;
-            logDiv.scrollTop = logDiv.scrollHeight;
-        }
+        <section>
+            <h2>Популярные блюда</h2>
+            <table>
+                <tr>
+                    <th>Название</th>
+                    <th>Описание</th>
+                    <th>Цена</th>
+                </tr>
+                <tr>
+                    <td>Куриный суп</td>
+                    <td>Легкий суп с курицей, овощами и зеленью</td>
+                    <td>250 ₽</td>
+                </tr>
+                <tr>
+                    <td>Греческий салат</td>
+                    <td>Свежие овощи, фета и оливковое масло</td>
+                    <td>300 ₽</td>
+                </tr>
+                <tr>
+                    <td>Паста Карбонара</td>
+                    <td>Классическая паста с беконом и сливочным соусом</td>
+                    <td>350 ₽</td>
+                </tr>
+                <tr>
+                    <td>Лосось на гриле</td>
+                    <td>Филе лосося с лимонным соусом и овощами</td>
+                    <td>450 ₽</td>
+                </tr>
+                <tr>
+                    <td>Тирамису</td>
+                    <td>Нежный десерт с маскарпоне и кофе</td>
+                    <td>200 ₽</td>
+                </tr>
+            </table>
+        </section>
+    </main>
 
-        const iframe = document.getElementById('audioFrame');
-
-        // Проверка загрузки iframe
-        iframe.onload = () => {
-            addLog('Iframe успешно загружен');
-            try {
-                const iframeAudio = iframe.contentWindow.document.querySelector('audio');
-                if (iframeAudio) {
-                    addLog('Аудио элемент найден в iframe');
-                    iframeAudio.play()
-                        .then(() => addLog('Воспроизведение начато из iframe'))
-                        .catch((err) => addLog('Ошибка воспроизведения в iframe: ' + err.message));
-                } else {
-                    addLog('Аудио элемент не найден в iframe');
-                }
-            } catch (e) {
-                addLog('Ошибка доступа к содержимому iframe: ' + e.message);
-            }
-        };
-
-        iframe.onerror = () => {
-            addLog('Ошибка загрузки iframe');
-        };
-
-        addLog('Страница загружена, пытаемся воспроизвести аудио через iframe...');
-    </script>
-<
+    <footer id="contacts">
+        <p>Свяжитесь с нами:</p>
+        <p><a href="tel:+74951234567">+7 (495) 123-45-67</a></p>
+        <p><a href="mailto:info@lunchdelivery.ru">info@lunchdelivery.ru</a></p>
+        <p>Москва, ул. Примерная, д. 10</p>
+    </footer>
+</body>
+</html>
