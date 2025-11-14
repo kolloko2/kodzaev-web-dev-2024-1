@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Food Construct | Собрать ланч</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="lunch.css">
+</head>
+<body>
+
+
+
+<header>
+  <h1>Food Construct</h1>
+  <nav>
+    <a href="index.html">О нас</a>
+    <a href="lunch.html" class="active">Собрать ланч</a>
+    <a href="#">Заказы</a>
+    <a href="#contacts">Контакты</a>
+  </nav>
+</header>
+
+<main>
+ <main>
+  <section>
+    <h2>Выберите суп</h2>
+    <div class="menu-grid" id="soups-grid"></div>
+  </section>
+
+  <section>
+    <h2>Выберите основное блюдо</h2>
+    <div class="menu-grid" id="mains-grid"></div>
+  </section>
+
+  <section>
+    <h2>Выберите напиток</h2>
+    <div class="menu-grid" id="drinks-grid"></div>
+  </section>
+</main>
+
+
+<section class="order-form-section">
+  <h2>Оформить заказ</h2>
+
+  <form class="order-form" action="https://httpbin.org/post" method="post">
+    <div class="order-form__column">
+  <h3>Ваш заказ</h3>
+
+  <!-- когда ничего не выбрано -->
+  <div id="selected-empty" class="selected-empty">
+    Ничего не выбрано
+  </div>
+
+  <!-- блок с категориями, скрыт пока ничего не выбрано -->
+  <div id="selected-categories" class="selected-categories hidden">
+    <div class="selected-category" data-category="soup">
+      <h4>Суп</h4>
+      <p class="selected-text">Блюдо не выбрано</p>
+    </div>
+
+    <div class="selected-category" data-category="main">
+      <h4>Основное блюдо</h4>
+      <p class="selected-text">Блюдо не выбрано</p>
+    </div>
+
+    <div class="selected-category" data-category="drink">
+      <h4>Напиток</h4>
+      <p class="selected-text">Напиток не выбран</p>
+    </div>
+  </div>
+
+  <!-- блок с итоговой стоимостью -->
+  <div id="order-summary" class="order-summary hidden">
+    <h4>Стоимость заказа</h4>
+    <p><span id="order-total">0</span> ₽</p>
+  </div>
+
+  <!-- комментарий к заказу оставляем как был -->
+  <div class="form-group">
+    <label for="comment">Комментарий</label>
+    <textarea id="comment" name="comment" rows="4"></textarea>
+  </div>
+
+  <!-- скрытые поля, которые уйдут на сервер (keyword’ы) -->
+  <input type="hidden" name="soup" id="soup-input">
+  <input type="hidden" name="main" id="main-input">
+  <input type="hidden" name="drink" id="drink-input">
+</div>
+
+    <div class="order-form__column">
+      <h3>Данные клиента</h3>
+
+      <div class="form-group">
+        <label for="name">Имя</label>
+        <input type="text" id="name" name="name" required>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required>
+      </div>
+
+      <div class="form-group form-group--checkbox">
+        <input type="checkbox" id="subscribe" name="subscribe" checked>
+        <label for="subscribe">Хочу получать акции</label>
+      </div>
+
+      <div class="form-group">
+        <label for="phone">Телефон</label>
+        <input type="tel" id="phone" name="phone" required>
+      </div>
+
+      <div class="form-group">
+        <label for="address">Адрес</label>
+        <input type="text" id="address" name="address" required>
+      </div>
+
+      <fieldset class="form-group form-group--fieldset">
+        <legend>Время доставки</legend>
+        <div class="radio-group">
+          <label><input type="radio" name="delivery_type" value="asap" required> Как можно скорее</label>
+          <label><input type="radio" name="delivery_type" value="exact_time"> К указанному времени</label>
+        </div>
+      </fieldset>
+
+      <div class="form-group">
+        <label for="delivery_time">Укажите время</label>
+        <input type="time" id="delivery_time" name="delivery_time" min="07:00" max="23:00" step="300">
+      </div>
+
+      <div class="form-actions">
+        <button type="reset" class="btn btn-reset">Сбросить</button>
+        <button type="submit" class="btn btn-submit">Отправить</button>
+      </div>
+    </div>
+  </form>
+</section>
+
+<footer id="contacts">
+  <p>Позвонить нам: <a href="tel:+70000000000">+7-000-000-00-00</a></p>
+</footer>
+<script src="dishes.js"></script>
+<script src="main.js"></script>
+</body>
+</html>

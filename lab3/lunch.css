@@ -1,0 +1,229 @@
+/* ===== ОБЩИЕ СЕКЦИИ ===== */
+section {
+  margin-bottom: 40px;
+}
+
+section h2 {
+  margin-bottom: 20px;
+}
+
+/* ===== КАРТОЧКИ МЕНЮ (как было) ===== */
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.menu-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 30px 40px;
+  border-radius: 35px;
+  background: #fff;
+  filter: drop-shadow(17px 19px 24px rgba(0, 0, 0, 0.13));
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.menu-item:hover {
+  border: 2px solid tomato;
+}
+
+.menu-item img {
+  width: 100%;
+  border-radius: 35px;
+  margin-bottom: 15px;
+}
+
+.menu-item .price {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.menu-item .name {
+  font-size: 18px;
+  margin: 10px 0;
+}
+
+.menu-item .weight {
+  color: gray;
+  margin-bottom: 10px;
+}
+
+.menu-item button {
+  background: #f1eee9;
+  border: none;
+  padding: 10px 30px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.menu-item:hover button {
+  background: tomato;
+  color: white;
+}
+
+/* ===== ФОРМА ЗАКАЗА ===== */
+
+/* сама секция формы */
+.order-form-section {
+  padding: 40px 40px 60px;
+}
+
+/* заголовок "Сделать/Оформить заказ" по центру */
+.order-form-section > h2 {
+  text-align: center;
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 30px;
+}
+
+/* две колонки формы */
+.order-form {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  gap: 80px;
+  align-items: flex-start;
+}
+
+/* каждая колонка */
+.order-form__column {
+  flex: 1 1 0;
+}
+
+/* заголовки колонок "Ваш заказ" / "Ваши данные" */
+.order-form__column h3 {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+/* отдельный блок поля */
+.form-group {
+  margin-bottom: 18px;
+}
+
+/* подписи к полям */
+.form-group label,
+.form-group legend {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+
+/* инпуты, селекты, текстовые поля */
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="tel"],
+.form-group input[type="time"],
+.form-group input[type="password"],
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #b9b9b9;
+  border-radius: 3px;
+  font: inherit;
+}
+
+/* textarea по умолчанию не растянутая */
+.form-group textarea {
+  resize: vertical;
+}
+
+/* чекбокс — в одну строку с текстом */
+.form-group--checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.form-group--checkbox input[type="checkbox"] {
+  width: auto;
+}
+
+/* fieldset для времени доставки */
+.form-group--fieldset {
+  border: none;
+  padding: 0;
+  margin: 15px 0;
+}
+
+.radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.radio-group label,
+.radio-group .radio-item {
+  font-weight: 400;
+}
+
+/* блок с кнопками */
+.form-actions {
+  margin-top: 20px;
+  display: flex;
+  gap: 12px;
+}
+
+/* кнопки */
+.btn {
+  padding: 10px 24px;
+  font: inherit;
+  border-radius: 4px;
+  cursor: pointer;
+  border: 1px solid #000;
+  background: #fff;
+}
+
+.btn-reset {
+  background: #fff;
+}
+
+.btn-submit {
+  background: #000;
+  color: #fff;
+}
+
+/* ===== АДАПТИВНОСТЬ ===== */
+
+@media (max-width: 900px) {
+  .order-form {
+    flex-direction: column;
+    gap: 40px;
+  }
+}
+
+@media (max-width: 800px) {
+  .menu-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  nav {
+    justify-content: space-between;
+    width: 100%;
+  }
+}
+
+@media (max-width: 600px) {
+  h1, section h2 {
+    text-align: center;
+  }
+
+  nav {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  nav a {
+    font-size: 18px;
+  }
+
+  .menu-grid {
+    grid-template-columns: 1fr;
+  }
+}
