@@ -1,0 +1,112 @@
+/* ===== ЛАБА 6: КОМБО ===== */
+.combos {
+  margin: 20px 0 40px;
+}
+
+.combos__title {
+  text-align: center;
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 18px;
+}
+
+.combos-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+  align-items: start;
+  margin-bottom: 14px;
+}
+
+.combo {
+  display: flex;
+  gap: 18px;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 10px 6px;
+}
+
+.combo__dish {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.combo__img {
+  width: 72px;
+  height: 72px;
+  object-fit: cover;
+  border-radius: 16px;
+  transition: transform 0.25s ease;
+}
+
+.combo__img:hover {
+  transform: translateY(-6px) scale(1.08);
+}
+
+.combo__label {
+  font-size: 18px;
+}
+
+.dessert-note {
+  text-align: right;
+  margin-top: 8px;
+}
+
+.dessert-note__title {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.dessert-note__text {
+  font-size: 16px; /* на 2 пункта меньше */
+  font-style: italic;
+  opacity: 0.85;
+}
+
+/* ====== МОДАЛЬНОЕ УВЕДОМЛЕНИЕ ====== */
+.notice-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.notice {
+  width: min(680px, calc(100% - 40px));
+  background: #fff;
+  border: 2px solid #111;
+  padding: 46px 36px;
+  text-align: center;
+}
+
+.notice__text {
+  font-size: 26px;
+  font-weight: 600;
+  margin-bottom: 26px;
+  line-height: 1.25;
+}
+
+.notice__btn {
+  padding: 12px 34px;
+  border-radius: 14px;
+  border: 2px solid #111;
+  background: #fff;
+  font-size: 20px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.notice__btn:hover {
+  background: tomato;
+  color: #fff;
+}
+
+/* ====== ДАЛЬШЕ МОЖЕШЬ ОСТАВИТЬ СВОЙ CSS ЛР5 ======
+   (если у тебя уже есть menu-grid/menu-item/filters/form)
+   Просто добавь это сверху/снизу файла.
+*/
