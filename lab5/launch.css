@@ -1,0 +1,70 @@
+/* ===== ОБЩИЕ СЕКЦИИ ===== */
+section {
+  margin-bottom: 40px;
+}
+
+section h2 {
+  margin-bottom: 16px;
+}
+
+/* ===== ФИЛЬТРЫ ===== */
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.filter-btn {
+  background: #f1eee9;
+  border: 1px solid #b9b9b9;
+  padding: 8px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font: inherit;
+}
+
+.filter-btn:hover {
+  border-color: tomato;
+}
+
+.filter-btn.active {
+  background: tomato;
+  border-color: tomato;
+  color: #fff;
+  font-weight: 700;
+}
+
+/* ===== КАРТОЧКИ МЕНЮ ===== */
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.menu-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 30px 40px;
+  border-radius: 35px;
+  background: #fff;
+  filter: drop-shadow(17px 19px 24px rgba(0, 0, 0, 0.13));
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.menu-item:hover {
+  border: 2px solid tomato;
+}
+
+.menu-item img {
+  width: 100%;
+  border-radius: 35px;
+  margin-bottom: 15px;
+}
+
+.menu-item .price {
+  font-size: 18px;
+  font-wei
