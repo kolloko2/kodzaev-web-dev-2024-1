@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Food Construct | Собрать ланч</title>
 
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
@@ -25,60 +25,50 @@
 <main>
   <section>
     <h2>Выберите суп</h2>
-
     <div class="filters" data-filters-for="soup">
       <button type="button" class="filter-btn" data-kind="fish">рыбный</button>
       <button type="button" class="filter-btn" data-kind="meat">мясной</button>
       <button type="button" class="filter-btn" data-kind="veg">вегетарианский</button>
     </div>
-
     <div class="menu-grid" id="soups-grid"></div>
   </section>
 
   <section>
     <h2>Выберите основное блюдо</h2>
-
     <div class="filters" data-filters-for="main">
       <button type="button" class="filter-btn" data-kind="fish">рыбное</button>
       <button type="button" class="filter-btn" data-kind="meat">мясное</button>
       <button type="button" class="filter-btn" data-kind="veg">вегетарианское</button>
     </div>
-
     <div class="menu-grid" id="mains-grid"></div>
   </section>
 
   <section>
     <h2>Выберите салат или стартер</h2>
-
     <div class="filters" data-filters-for="salad">
       <button type="button" class="filter-btn" data-kind="fish">рыбный</button>
       <button type="button" class="filter-btn" data-kind="meat">мясной</button>
       <button type="button" class="filter-btn" data-kind="veg">вегетарианский</button>
     </div>
-
     <div class="menu-grid" id="salads-grid"></div>
   </section>
 
   <section>
     <h2>Выберите напиток</h2>
-
     <div class="filters" data-filters-for="drink">
       <button type="button" class="filter-btn" data-kind="cold">холодный</button>
       <button type="button" class="filter-btn" data-kind="hot">горячий</button>
     </div>
-
     <div class="menu-grid" id="drinks-grid"></div>
   </section>
 
   <section>
     <h2>Выберите десерт</h2>
-
     <div class="filters" data-filters-for="dessert">
       <button type="button" class="filter-btn" data-kind="small">маленькая порция</button>
       <button type="button" class="filter-btn" data-kind="medium">средняя порция</button>
       <button type="button" class="filter-btn" data-kind="big">большая порция</button>
     </div>
-
     <div class="menu-grid" id="desserts-grid"></div>
   </section>
 
@@ -146,4 +136,52 @@
         </div>
 
         <div class="form-group">
-          <label
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" required>
+        </div>
+
+        <div class="form-group form-group--checkbox">
+          <input type="checkbox" id="subscribe" name="subscribe" checked>
+          <label for="subscribe">Хочу получать акции</label>
+        </div>
+
+        <div class="form-group">
+          <label for="phone">Телефон</label>
+          <input type="tel" id="phone" name="phone" required>
+        </div>
+
+        <div class="form-group">
+          <label for="address">Адрес</label>
+          <input type="text" id="address" name="address" required>
+        </div>
+
+        <fieldset class="form-group form-group--fieldset">
+          <legend>Время доставки</legend>
+          <div class="radio-group">
+            <label><input type="radio" name="delivery_type" value="asap" required> Как можно скорее</label>
+            <label><input type="radio" name="delivery_type" value="exact_time"> К указанному времени</label>
+          </div>
+        </fieldset>
+
+        <div class="form-group">
+          <label for="delivery_time">Укажите время</label>
+          <input type="time" id="delivery_time" name="delivery_time" min="07:00" max="23:00" step="300">
+        </div>
+
+        <div class="form-actions">
+          <button type="reset" class="btn btn-reset">Сбросить</button>
+          <button type="submit" class="btn btn-submit">Отправить</button>
+        </div>
+      </div>
+    </form>
+  </section>
+</main>
+
+<footer id="contacts">
+  <p>Позвонить нам: <a href="tel:+70000000000">+7-000-000-00-00</a></p>
+</footer>
+
+<script src="dishes.js"></script>
+<script src="main.js"></script>
+</body>
+</html>
