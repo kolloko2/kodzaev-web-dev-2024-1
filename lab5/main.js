@@ -97,4 +97,120 @@ document.addEventListener("DOMContentLoaded", function () {
 
     card.classList.add("menu-item--selected");
 
-    updateSelected
+    updateSelectedView();
+  });
+
+  // ====== ФИЛЬТРЫ ======
+  document.addEventListener("click", function (event) {
+    const btn = event.target.closest(".filter-btn");
+    if (!btn) return;
+
+    const filtersBlock = btn.closest(".filters");
+    if (!filtersBlock) return;
+
+    const category = filtersBlock.dataset.filtersFor;
+    const kind = btn.dataset.kind;
+
+    const same = activeFilters[category] === kind;
+    activeFilters[category] = same ? null : kind;
+
+    // обновим active-класс кнопок в этом блоке
+    filtersBlock.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+    if (!same) btn.classList.add("active");
+
+    // перерисуем категорию (выбор НЕ сбрасываем)
+    renderCategory(category);
+  });
+
+  // ====== СБРОС ФОРМЫ ======
+  const form = document.querySelector(".order-form");
+  form.addEventListener("reset", function () {
+    selectedDishes.soup = null;
+    selectedDishes.main = null;
+    selectedDishes.salad = null;
+    selectedDishes.drink = null;
+    selectedDishes.dessert = null;
+
+    // фильтры по заданию не обязаны сбрасываться, но обычно удобно сбросить и их:
+    Object.keys(activeFilters).forEach(k => activeFilters[k] = null);
+    document.querySelectorAll(".filter-btn.active").forEach(b => b.classList.remove("active"));
+
+    setTimeout(() => {
+      renderAll();
+      updateSelectedView();
+    }, 0);
+  });
+
+  // старт
+  renderAll();
+  updateSelectedView();
+});
+
+function updateSelectedView() {
+  const emptyBlock = document.getElementById("selected-empty");
+  const categoriesBlock = document.getElementById("selected-categories");
+  const summaryBlock = document.getElementById("order-summary");
+  const totalSpan = document.getElementById("order-total");
+
+  const hasSelection = !!(
+    selectedDishes.soup ||
+    selectedDishes.main ||
+    selectedDishes.salad ||
+    selectedDishes.drink ||
+    selectedDishes.dessert
+  );
+
+  if (!hasSelection) {
+    emptyBlock.classList.remove("hidden");
+    categoriesBlock.classList.add("hidden");
+    summaryBlock.classList.add("hidden");
+  } else {
+    emptyBlock.classList.add("hidden");
+    categoriesBlock.classList.remove("hidden");
+  }
+
+  const mapping = [
+    { category: "soup", defaultText: "Блюдо не выбрано" },
+    { category: "main", defaultText: "Блюдо не выбрано" },
+    { category: "salad", defaultText: "Блюдо не выбрано" },
+    { category: "drink", defaultText: "Напиток не выбран" },
+    { category: "dessert", defaultText: "Блюдо не выбрано" }
+  ];
+
+  let total = 0;
+
+  mapping.forEach(({ category, defaultText }) => {
+    const textEl = document.querySelector(
+      `.selected-category[data-category="${category}"] .selected-text`
+    );
+    if (!textEl) return;
+
+    const dish = selectedDishes[category];
+    if (dish) {
+      textEl.textContent = `${dish.name} — ${dish.price} ₽`;
+      total += dish.price;
+    } else {
+      textEl.textContent = defaultText;
+    }
+  });
+
+  if (total > 0) {
+    summaryBlock.classList.remove("hidden");
+    totalSpan.textContent = total;
+  } else {
+    summaryBlock.classList.add("hidden");
+  }
+
+  // скрытые поля формы (keyword’ы)
+  const soupInput = document.getElementById("soup-input");
+  const mainInput = document.getElementById("main-input");
+  const saladInput = document.getElementById("salad-input");
+  const drinkInput = document.getElementById("drink-input");
+  const dessertInput = document.getElementById("dessert-input");
+
+  if (soupInput) soupInput.value = selectedDishes.soup ? selectedDishes.soup.keyword : "";
+  if (mainInput) mainInput.value = selectedDishes.main ? selectedDishes.main.keyword : "";
+  if (saladInput) saladInput.value = selectedDishes.salad ? selectedDishes.salad.keyword : "";
+  if (drinkInput) drinkInput.value = selectedDishes.drink ? selectedDishes.drink.keyword : "";
+  if (dessertInput) dessertInput.value = selectedDishes.dessert ? selectedDishes.dessert.keyword : "";
+}
