@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Food Construct | Собрать ланч</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="lunch.css">
+</head>
+<body>
+
+<header>
+  <h1>Food Construct</h1>
+  <nav>
+    <a href="../index.html">О нас</a>
+    <a href="index.html" class="active">Собрать ланч</a>
+    <a href="#">Заказы</a>
+    <a href="#contacts">Контакты</a>
+  </nav>
+</header>
+
+<main>
+  <section>
+    <h2>Выберите суп</h2>
+
+    <div class="filters" data-filters-for="soup">
+      <button type="button" class="filter-btn" data-kind="fish">рыбный</button>
+      <button type="button" class="filter-btn" data-kind="meat">мясной</button>
+      <button type="button" class="filter-btn" data-kind="veg">вегетарианский</button>
+    </div>
+
+    <div class="menu-grid" id="soups-grid"></div>
+  </section>
+
+  <section>
+    <h2>Выберите основное блюдо</h2>
+
+    <div class="filters" data-filters-for="main">
+      <button type="button" class="filter-btn" data-kind="fish">рыбное</button>
+      <button type="button" class="filter-btn" data-kind="meat">мясное</button>
+      <button type="button" class="filter-btn" data-kind="veg">вегетарианское</button>
+    </div>
+
+    <div class="menu-grid" id="mains-grid"></div>
+  </section>
+
+  <section>
+    <h2>Выберите салат или стартер</h2>
+
+    <div class="filters" data-filters-for="salad">
+      <button type="button" class="filter-btn" data-kind="fish">рыбный</button>
+      <button type="button" class="filter-btn" data-kind="meat">мясной</button>
+      <button type="button" class="filter-btn" data-kind="veg">вегетарианский</button>
+    </div>
+
+    <div class="menu-grid" id="salads-grid"></div>
+  </section>
+
+  <section>
+    <h2>Выберите напиток</h2>
+
+    <div class="filters" data-filters-for="drink">
+      <button type="button" class="filter-btn" data-kind="cold">холодный</button>
+      <button type="button" class="filter-btn" data-kind="hot">горячий</button>
+    </div>
+
+    <div class="menu-grid" id="drinks-grid"></div>
+  </section>
+
+  <section>
+    <h2>Выберите десерт</h2>
+
+    <div class="filters" data-filters-for="dessert">
+      <button type="button" class="filter-btn" data-kind="small">маленькая порция</button>
+      <button type="button" class="filter-btn" data-kind="medium">средняя порция</button>
+      <button type="button" class="filter-btn" data-kind="big">большая порция</button>
+    </div>
+
+    <div class="menu-grid" id="desserts-grid"></div>
+  </section>
+
+  <section class="order-form-section">
+    <h2>Оформить заказ</h2>
+
+    <form class="order-form" action="https://httpbin.org/post" method="post">
+      <div class="order-form__column">
+        <h3>Ваш заказ</h3>
+
+        <div id="selected-empty" class="selected-empty">
+          Ничего не выбрано
+        </div>
+
+        <div id="selected-categories" class="selected-categories hidden">
+          <div class="selected-category" data-category="soup">
+            <h4>Суп</h4>
+            <p class="selected-text">Блюдо не выбрано</p>
+          </div>
+
+          <div class="selected-category" data-category="main">
+            <h4>Основное блюдо</h4>
+            <p class="selected-text">Блюдо не выбрано</p>
+          </div>
+
+          <div class="selected-category" data-category="salad">
+            <h4>Салат/стартер</h4>
+            <p class="selected-text">Блюдо не выбрано</p>
+          </div>
+
+          <div class="selected-category" data-category="drink">
+            <h4>Напиток</h4>
+            <p class="selected-text">Напиток не выбран</p>
+          </div>
+
+          <div class="selected-category" data-category="dessert">
+            <h4>Десерт</h4>
+            <p class="selected-text">Блюдо не выбрано</p>
+          </div>
+        </div>
+
+        <div id="order-summary" class="order-summary hidden">
+          <h4>Стоимость заказа</h4>
+          <p><span id="order-total">0</span> ₽</p>
+        </div>
+
+        <div class="form-group">
+          <label for="comment">Комментарий</label>
+          <textarea id="comment" name="comment" rows="4"></textarea>
+        </div>
+
+        <input type="hidden" name="soup" id="soup-input">
+        <input type="hidden" name="main" id="main-input">
+        <input type="hidden" name="salad" id="salad-input">
+        <input type="hidden" name="drink" id="drink-input">
+        <input type="hidden" name="dessert" id="dessert-input">
+      </div>
+
+      <div class="order-form__column">
+        <h3>Данные клиента</h3>
+
+        <div class="form-group">
+          <label for="name">Имя</label>
+          <input type="text" id="name" name="name" required>
+        </div>
+
+        <div class="form-group">
+          <label
