@@ -1,7 +1,14 @@
 const selectedDishes = { soup: null, main: null, salad: null, drink: null, dessert: null };
 const activeFilters  = { soup: null, main: null, salad: null, drink: null, dessert: null };
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
+  try {
+    dishes = await loadDishes();
+  } catch (e) {
+    console.error(e);
+    return;
+  }
+
   const containers = {
     soup: document.getElementById("soups-grid"),
     main: document.getElementById("mains-grid"),
@@ -13,8 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const dishesByCategory = { soup: [], main: [], salad: [], drink: [], dessert: [] };
 
   dishes.forEach(d => {
-    if (!dishesByCategory[d.category]) return;
-    dishesByCategory[d.category].push(d);
+    if (dishesByCategory[d.category]) dishesByCategory[d.category].push(d);
   });
 
   function dishCard(dish, isSelected) {
@@ -38,41 +44,39 @@ document.addEventListener("DOMContentLoaded", () => {
     container.innerHTML = "";
     const kind = activeFilters[category];
 
-    const list = dishesByCategory[category]
+    dishesByCategory[category]
       .slice()
       .sort((a, b) => a.name.localeCompare(b.name, "ru"))
-      .filter(d => !kind || d.kind === kind);
-
-    list.forEach(dish => {
-      const isSelected = selectedDishes[category]?.keyword === dish.keyword;
-      container.insertAdjacentHTML("beforeend", dishCard(dish, isSelected));
-    });
+      .filter(d => !kind || d.kind === kind)
+      .forEach(dish => {
+        const isSelected = selectedDishes[category]?.keyword === dish.keyword;
+        container.insertAdjacentHTML("beforeend", dishCard(dish, isSelected));
+      });
   }
 
   function renderAll() {
     Object.keys(dishesByCategory).forEach(renderCategory);
   }
 
-  // ====== выбор блюда ======
   document.querySelector("main").addEventListener("click", (e) => {
     const btn = e.target.closest(".add-btn");
     if (!btn) return;
 
     const card = btn.closest(".menu-item");
-    const keyword = card?.dataset?.dish;
+    const keyword = card.dataset.dish;
     const dish = dishes.find(d => d.keyword === keyword);
     if (!dish) return;
 
     selectedDishes[dish.category] = dish;
 
-    document.querySelectorAll(`.menu-item[data-category="${dish.category}"]`)
-      .forEach(x => x.classList.remove("menu-item--selected"));
+    document
+      .querySelectorAll(`.menu-item[data-category="${dish.category}"]`)
+      .forEach(el => el.classList.remove("menu-item--selected"));
 
     card.classList.add("menu-item--selected");
     updateSelectedView();
   });
 
-  // ====== фильтры ======
   document.addEventListener("click", (e) => {
     const btn = e.target.closest(".filter-btn");
     if (!btn) return;
@@ -92,8 +96,8 @@ document.addEventListener("DOMContentLoaded", () => {
     renderCategory(category);
   });
 
-  // ====== ЛАБА 6: проверка при отправке формы ======
   const form = document.querySelector(".order-form");
+
   form?.addEventListener("submit", (e) => {
     const msg = validateLunch(selectedDishes);
     if (msg) {
@@ -102,7 +106,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // reset
   form?.addEventListener("reset", () => {
     Object.keys(selectedDishes).forEach(k => selectedDishes[k] = null);
     Object.keys(activeFilters).forEach(k => activeFilters[k] = null);
@@ -127,12 +130,12 @@ function updateSelectedView() {
   const has = Object.values(selectedDishes).some(Boolean);
 
   if (!has) {
-    emptyBlock?.classList.remove("hidden");
-    categoriesBlock?.classList.add("hidden");
-    summaryBlock?.classList.add("hidden");
+    emptyBlock.classList.remove("hidden");
+    categoriesBlock.classList.add("hidden");
+    summaryBlock.classList.add("hidden");
   } else {
-    emptyBlock?.classList.add("hidden");
-    categoriesBlock?.classList.remove("hidden");
+    emptyBlock.classList.add("hidden");
+    categoriesBlock.classList.remove("hidden");
   }
 
   const mapping = [
@@ -147,9 +150,9 @@ function updateSelectedView() {
 
   mapping.forEach(({ category, defaultText }) => {
     const textEl = document.querySelector(`.selected-category[data-category="${category}"] .selected-text`);
+    const dish = selectedDishes[category];
     if (!textEl) return;
 
-    const dish = selectedDishes[category];
     if (dish) {
       textEl.textContent = `${dish.name} — ${dish.price} ₽`;
       total += dish.price;
@@ -159,10 +162,10 @@ function updateSelectedView() {
   });
 
   if (total > 0) {
-    summaryBlock?.classList.remove("hidden");
-    if (totalSpan) totalSpan.textContent = String(total);
+    summaryBlock.classList.remove("hidden");
+    totalSpan.textContent = String(total);
   } else {
-    summaryBlock?.classList.add("hidden");
+    summaryBlock.classList.add("hidden");
   }
 
   const setVal = (id, v) => {
@@ -177,10 +180,6 @@ function updateSelectedView() {
   setVal("dessert-input", selectedDishes.dessert?.keyword);
 }
 
-/**
- * Возвращает текст уведомления (если нельзя отправлять),
- * или null (если комбо валидно).
- */
 function validateLunch(sel) {
   const hasSoup = !!sel.soup;
   const hasMain = !!sel.main;
@@ -188,47 +187,28 @@ function validateLunch(sel) {
   const hasDrink = !!sel.drink;
   const hasDessert = !!sel.dessert;
 
-  const hasAnything = hasSoup || hasMain || hasSalad || hasDrink || hasDessert;
-  if (!hasAnything) return "Ничего не выбрано. Выберите блюда для заказа";
+  if (!hasSoup && !hasMain && !hasSalad && !hasDrink && !hasDessert) {
+    return "Ничего не выбрано. Выберите блюда для заказа";
+  }
 
-  // Валидные комбо (десерт не влияет)
   const valid =
-    (hasSoup && hasMain && hasSalad && hasDrink) || // 1
-    (hasSoup && hasMain && hasDrink && !hasSalad) || // 2
-    (hasSoup && hasSalad && hasDrink && !hasMain) || // 3
-    (hasMain && hasSalad && hasDrink && !hasSoup) || // 4
-    (hasMain && hasDrink && !hasSoup && !hasSalad); // 5
+    (hasSoup && hasMain && hasSalad && hasDrink) ||
+    (hasSoup && hasMain && hasDrink && !hasSalad) ||
+    (hasSoup && hasSalad && hasDrink && !hasMain) ||
+    (hasMain && hasSalad && hasDrink && !hasSoup) ||
+    (hasMain && hasDrink && !hasSoup && !hasSalad);
 
   if (valid) return null;
 
-  // 1) выбрано всё нужное кроме напитка
-  // (то есть набор может стать валидным при добавлении напитка)
-  const needsOnlyDrink =
-    !hasDrink && (
-      (hasSoup && hasMain && hasSalad) ||
-      (hasSoup && hasMain && !hasSalad) ||
-      (hasSoup && hasSalad && !hasMain) ||
-      (hasMain && hasSalad && !hasSoup) ||
-      (hasMain && !hasSoup && !hasSalad) // main-only -> станет комбо 5
-    );
-  if (needsOnlyDrink) return "Выберите напиток";
-
-  // 2) выбран суп, но не выбраны главное/салат
+  if (!hasDrink) return "Выберите напиток";
   if (hasSoup && !hasMain && !hasSalad) return "Выберите главное блюдо/салат/стартер";
-
-  // 3) выбран салат, но нет супа и главного
   if (hasSalad && !hasSoup && !hasMain) return "Выберите суп или главное блюдо";
-
-  // 4) выбран напиток/десерт (а нужной базы нет) -> главное блюдо
   if ((hasDrink || hasDessert) && !hasMain) return "Выберите главное блюдо";
 
-  // общий фолбэк (чтобы не пропустить странные наборы)
   return "Выберите напиток";
 }
 
-/** Создаёт уведомление динамически */
 function showNotice(text) {
-  // удалить старое, если было
   document.querySelector(".notice-overlay")?.remove();
 
   const overlay = document.createElement("div");
@@ -247,7 +227,7 @@ function showNotice(text) {
   btn.textContent = "Окей 👌";
 
   btn.addEventListener("click", () => overlay.remove());
-  overlay.addEventListener("click", (e) => {
+  overlay.addEventListener("click", e => {
     if (e.target === overlay) overlay.remove();
   });
 
