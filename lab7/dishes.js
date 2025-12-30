@@ -1,98 +1,91 @@
-
 const API_URL = "https://edu.std-900.ist.mospolytech.ru/labs/api/dishes";
 
+// Глобально как раньше
+let dishes = [];
+
+// 1) приводим category к твоим ключам: soup/main/salad/drink/dessert
 function normalizeCategory(raw) {
-  const s = String(raw || "").trim().toLowerCase();
-  if (s.includes("суп")) return "soup";
-  if (s.includes("глав")) return "main";
-  if (s.includes("салат") || s.includes("стартер")) return "salad";
-  if (s.includes("напит")) return "drink";
-  if (s.includes("десерт")) return "dessert";
-  return s; // fallback
+  const c = String(raw ?? "").trim().toLowerCase();
+
+  if (c === "soup" || c.includes("суп")) return "soup";
+  if (c === "salad" || c.includes("салат") || c.includes("стартер")) return "salad";
+  if (c === "drink" || c.includes("напит")) return "drink";
+  if (c === "dessert" || c.includes("десерт")) return "dessert";
+
+  // ВАЖНО: в API есть "main-course"
+  if (c === "main-course" || c.includes("main") || c.includes("глав") || c.includes("основ")) return "main";
+
+  return c; // fallback
 }
 
-function normalizeKind(category, rawKind) {
-  const k = String(rawKind || "").trim().toLowerCase();
+// 2) приводим kind к твоим значениям
+function normalizeKind(category, raw) {
+  const k = String(raw ?? "").trim().toLowerCase();
 
+  // soup/main/salad: fish meat veg
   if (category === "soup" || category === "main" || category === "salad") {
-    if (k.includes("рыб")) return "fish";
-    if (k.includes("мяс")) return "meat";
-    if (k.includes("вег") || k.includes("овощ") || k.includes("раст")) return "veg";
-    // иногда API может отдавать уже английские значения
-    if (k === "fish" || k === "meat" || k === "veg") return k;
-    return "veg"; // безопасный дефолт
+    if (k === "fish" || k.includes("рыб")) return "fish";
+    if (k === "meat" || k.includes("мяс")) return "meat";
+    if (k === "veg" || k.includes("вег") || k.includes("овощ") || k.includes("раст")) return "veg";
+    return "veg";
   }
 
+  // drink: cold/hot
   if (category === "drink") {
-    if (k.includes("холод") || k.includes("cold")) return "cold";
-    if (k.includes("горяч") || k.includes("hot")) return "hot";
+    if (k === "cold" || k.includes("холод")) return "cold";
+    if (k === "hot" || k.includes("горяч")) return "hot";
     return "cold";
   }
 
+  // dessert: small/medium/big
   if (category === "dessert") {
-    if (k.includes("мал") || k.includes("small")) return "small";
-    if (k.includes("сред") || k.includes("medium")) return "medium";
-    if (k.includes("бол") || k.includes("big") || k.includes("large")) return "big";
+    if (k === "small" || k.includes("мал")) return "small";
+    if (k === "medium" || k.includes("сред")) return "medium";
+    if (k === "big" || k === "large" || k.includes("бол")) return "big"; // large -> big
     return "small";
   }
 
   return k || "default";
 }
 
-
-function mapDish(apiDish) {
-  const category = normalizeCategory(apiDish["категория"] ?? apiDish.category);
-  const kind = normalizeKind(category, apiDish["вид"] ?? apiDish.kind);
-
-  const keyword =
-    apiDish["ключевое слово"] ??
-    apiDish.keyword ??
-    apiDish["ключ"] ??
-    apiDish.key ??
-    "";
-
-  const name =
-    apiDish["имя"] ??
-    apiDish.name ??
-    apiDish["название"] ??
-    "Без названия";
-
-  const count =
-    apiDish["количество"] ??
-    apiDish.count ??
-    "";
-
-  const price =
-    Number(apiDish["цена"] ?? apiDish.price ?? 0);
-
-  // image: API отдаёт URL без расширения — обычно это норм (сервер отдаёт картинку по этому адресу)
-  const image =
-    apiDish.image ??
-    apiDish["image"] ??
-    "";
-
-  return { keyword, category, kind, name, price, count, image };
+// 3) безопасно достаём значение по списку возможных ключей
+function pick(obj, keys, def = "") {
+  for (const key of keys) {
+    if (obj && obj[key] !== undefined && obj[key] !== null) return obj[key];
+  }
+  return def;
 }
 
+// 4) маппер в формат проекта
+function mapDish(apiDish) {
+  const categoryRaw = pick(apiDish, ["category", "категория"]);
+  const category = normalizeCategory(categoryRaw);
 
+  const kindRaw = pick(apiDish, ["kind", "вид"]);
+  const kind = normalizeKind(category, kindRaw);
+
+  const keyword = pick(apiDish, ["keyword", "ключевое слово"]);
+  const name = pick(apiDish, ["name", "имя", "название"], "Без названия");
+
+  const count = pick(apiDish, ["count", "количество"], "");
+  const price = Number(pick(apiDish, ["price", "цена"], 0));
+
+  const image = pick(apiDish, ["image"], "");
+
+  return { keyword, category, kind, name, count, price, image };
+}
+
+// 5) функция ЛР7
 async function loadDishes() {
-  const res = await fetch(API_URL, { method: "GET" });
-
-  if (!res.ok) {
-    throw new Error(`API error: ${res.status} ${res.statusText}`);
-  }
+  const res = await fetch(API_URL);
+  if (!res.ok) throw new Error(`API error: ${res.status} ${res.statusText}`);
 
   const data = await res.json();
-  if (!Array.isArray(data)) {
-    throw new Error("API returned non-array JSON");
-  }
+  if (!Array.isArray(data)) throw new Error("API returned non-array JSON");
 
   // нормализация
   const mapped = data.map(mapDish);
 
-  // Уберём битые записи (без категории/keyword)
-  return mapped.filter(d => d.category && d.keyword);
+  // уберём битые элементы
+  return mapped.filter(d => d.keyword && d.category);
 }
-
-// Глобальная переменная, как раньше
-let dishes = [];
