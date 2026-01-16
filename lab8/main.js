@@ -216,11 +216,13 @@ function updateSelectedView() {
   mapping.forEach(({ category, defaultText }) => {
     const textEl = document.querySelector(`.selected-category[data-category="${category}"] .selected-text`);
     const dish = selectedDishes[category];
+ 
+    if (dish) total += dish.price;
+
     if (!textEl) return;
 
     if (dish) {
       textEl.textContent = `${dish.name} — ${dish.price} ₽`;
-      total += dish.price;
     } else {
       textEl.textContent = defaultText;
     }
